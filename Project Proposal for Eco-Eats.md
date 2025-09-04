@@ -56,7 +56,7 @@ Despite these innovations, long-term adherence and generalizability across diver
 
 The Eco-Eats methodology follows a structured workflow that includes requirement analysis, system design, development, testing, and deployment. The system enables users to log meals, calculate calories and nutrients, analyze BMI, and export reports.
 
-![Workflow of Eco-Eats](images/Workplan.png)  
+![Workflow of Eco-Eats](images/methodology.png)  
 *Figure 1: Workflow of Eco-Eats*
 
 ### 4. Feasibility Study
@@ -117,7 +117,7 @@ The development of the **Eco-Eats** follows a structured approach to ensure syst
 
 ### 6. Workplan of Eco-Eats
 
-![Workplan of Eco-Eats](workplan.png)  
+![Workplan of Eco-Eats](images/Workplan.png)  
 *Figure 2: Workplan of Eco-Eats*
 
 ### 7. Budget Details of Eco-Eats
