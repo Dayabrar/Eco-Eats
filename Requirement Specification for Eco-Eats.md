@@ -339,7 +339,7 @@ This feature allows users to export their nutrition and calorie intake data into
   - All food and nutrition data sources must be verified and cited.
   - The application shall not provide misleading or harmful dietary advice.
 
-![Requirement Diagram](images/Requirement Diagram.drawio.png)
+![Requirement Diagram](Requirement Diagram.drawio.png)
 
 ### Contributors
 
