@@ -5,9 +5,15 @@ import java.awt.event.*;
 import java.sql.*;
 
 /**
- * Editable Profile Panel with BMI Calculator
- * Allows editing all fields except email and member since
- * Version: 2.0 - Added BMI calculation based on gender
+ * Editable Profile Panel with BMI Calculator - FINAL VERSION
+ * Version: 2.2 - Perfect spacing and alignment
+ *
+ * CHANGES MADE:
+ * 1. Changed BMI input panel from GridLayout to GridBagLayout for better control
+ * 2. Added proper insets (spacing) between labels and text fields
+ * 3. Set weightx for proper horizontal distribution
+ * 4. Labels are now closer to their respective input fields
+ * 5. Added padding between Height and Weight sections (20px)
  */
 public class EditableProfilePanel extends JPanel {
     private DatabaseHelper.UserData currentUser;
@@ -69,155 +75,223 @@ public class EditableProfilePanel extends JPanel {
         headerPanel.add(buttonPanel, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // Profile content
-        JPanel profileContent = new JPanel();
-        profileContent.setLayout(new BoxLayout(profileContent, BoxLayout.Y_AXIS));
-        profileContent.setBackground(Color.WHITE);
-        profileContent.setBorder(new CompoundBorder(
+        // Main content with proper constraints
+        JPanel contentWrapper = new JPanel(new BorderLayout());
+        contentWrapper.setBackground(Color.WHITE);
+        contentWrapper.setBorder(new CompoundBorder(
                 new LineBorder(new Color(220, 220, 220), 1),
                 new EmptyBorder(30, 30, 30, 30)
         ));
 
+        // Profile content with GridBagLayout for better control
+        JPanel profileContent = new JPanel(new GridBagLayout());
+        profileContent.setBackground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 0, 5, 0);
+        gbc.weightx = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
         // Full Name
-        profileContent.add(createFieldLabel("Full Name"));
+        profileContent.add(createFieldLabel("Full Name"), gbc);
+        gbc.gridy++;
+
         fullNameField = new JTextField(currentUser.fullName);
         fullNameField.setFont(new Font("Arial", Font.PLAIN, 16));
-        fullNameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        fullNameField.setPreferredSize(new Dimension(0, 40));
         fullNameField.setEditable(false);
+        fullNameField.setBackground(new Color(245, 245, 245));
         fullNameField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
-        profileContent.add(fullNameField);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(fullNameField, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Email (Read-only)
-        profileContent.add(createFieldLabel("Email (Cannot be changed)"));
+        profileContent.add(createFieldLabel("Email (Cannot be changed)"), gbc);
+        gbc.gridy++;
+
         emailLabel = new JLabel(currentUser.email);
         emailLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         emailLabel.setForeground(Color.GRAY);
-        emailLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        emailLabel.setPreferredSize(new Dimension(0, 40));
         emailLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
         emailLabel.setOpaque(true);
         emailLabel.setBackground(new Color(245, 245, 245));
-        profileContent.add(emailLabel);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(emailLabel, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Age
-        profileContent.add(createFieldLabel("Age"));
+        profileContent.add(createFieldLabel("Age"), gbc);
+        gbc.gridy++;
+
         ageField = new JTextField(String.valueOf(currentUser.age));
         ageField.setFont(new Font("Arial", Font.PLAIN, 16));
-        ageField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        ageField.setPreferredSize(new Dimension(0, 40));
         ageField.setEditable(false);
+        ageField.setBackground(new Color(245, 245, 245));
         ageField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
-        profileContent.add(ageField);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(ageField, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Gender
-        profileContent.add(createFieldLabel("Gender"));
+        profileContent.add(createFieldLabel("Gender"), gbc);
+        gbc.gridy++;
+
         genderComboBox = new JComboBox<String>(new String[]{"Male", "Female", "Other"});
         genderComboBox.setSelectedItem(currentUser.gender);
         genderComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-        genderComboBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        genderComboBox.setPreferredSize(new Dimension(0, 40));
         genderComboBox.setEnabled(false);
-        profileContent.add(genderComboBox);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(genderComboBox, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Activity Level
-        profileContent.add(createFieldLabel("Activity Level"));
+        profileContent.add(createFieldLabel("Activity Level"), gbc);
+        gbc.gridy++;
+
         activityComboBox = new JComboBox<String>(new String[]{
                 "Sedentary", "Lightly Active", "Moderately Active", "Very Active", "Extremely Active"
         });
         activityComboBox.setSelectedItem(currentUser.activityLevel);
         activityComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-        activityComboBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        activityComboBox.setPreferredSize(new Dimension(0, 40));
         activityComboBox.setEnabled(false);
-        profileContent.add(activityComboBox);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(activityComboBox, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Member Since (Read-only)
-        profileContent.add(createFieldLabel("Member Since (Cannot be changed)"));
+        profileContent.add(createFieldLabel("Member Since (Cannot be changed)"), gbc);
+        gbc.gridy++;
+
         memberSinceLabel = new JLabel(currentUser.createdAt.toString().substring(0, 10));
         memberSinceLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         memberSinceLabel.setForeground(Color.GRAY);
-        memberSinceLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        memberSinceLabel.setPreferredSize(new Dimension(0, 40));
         memberSinceLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
         memberSinceLabel.setOpaque(true);
         memberSinceLabel.setBackground(new Color(245, 245, 245));
-        profileContent.add(memberSinceLabel);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 25)));
+        profileContent.add(memberSinceLabel, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(20), gbc);
+        gbc.gridy++;
 
         // ==================== BMI SECTION ====================
         JLabel bmiSectionLabel = new JLabel("Body Mass Index (BMI) Calculator");
         bmiSectionLabel.setFont(new Font("Arial", Font.BOLD, 18));
         bmiSectionLabel.setForeground(new Color(123, 141, 74));
-        bmiSectionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        profileContent.add(bmiSectionLabel);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(bmiSectionLabel, gbc);
+        gbc.gridy++;
 
-        // Height and Weight in a row
-        JPanel bmiInputPanel = new JPanel();
-        bmiInputPanel.setLayout(new BoxLayout(bmiInputPanel, BoxLayout.X_AXIS));
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
+
+        // ============================================================
+        // CHANGED: Height and Weight panel with better spacing
+        // OLD: Used GridLayout(1, 4, 10, 0) - equal spacing for all
+        // NEW: Using GridBagLayout with custom insets for closer labels
+        // ============================================================
+        JPanel bmiInputPanel = new JPanel(new GridBagLayout());
         bmiInputPanel.setBackground(Color.WHITE);
-        bmiInputPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        bmiInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bmiInputPanel.setPreferredSize(new Dimension(0, 40));
 
-        // Height
+        GridBagConstraints bmiGbc = new GridBagConstraints();
+        bmiGbc.fill = GridBagConstraints.HORIZONTAL;
+        bmiGbc.insets = new Insets(0, 0, 0, 5); // Small gap after label
+        bmiGbc.gridy = 0;
+
+        // Height label
+        bmiGbc.gridx = 0;
+        bmiGbc.weightx = 0.0; // Don't stretch
         JLabel heightLabel = new JLabel("Height (cm):");
         heightLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        heightLabel.setPreferredSize(new Dimension(100, 30));
-        bmiInputPanel.add(heightLabel);
+        bmiInputPanel.add(heightLabel, bmiGbc);
 
+        // Height field - close to label
+        bmiGbc.gridx = 1;
+        bmiGbc.weightx = 0.3; // Allow stretching
+        bmiGbc.insets = new Insets(0, 5, 0, 20); // 5px from label, 20px margin right
         heightField = new JTextField();
         heightField.setFont(new Font("Arial", Font.PLAIN, 16));
-        heightField.setMaximumSize(new Dimension(150, 40));
         heightField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
-        bmiInputPanel.add(heightField);
-        bmiInputPanel.add(Box.createRigidArea(new Dimension(20, 0)));
+        bmiInputPanel.add(heightField, bmiGbc);
 
-        // Weight
+        // Weight label
+        bmiGbc.gridx = 2;
+        bmiGbc.weightx = 0.0; // Don't stretch
+        bmiGbc.insets = new Insets(0, 20, 0, 5); // 20px margin left, 5px before field
         JLabel weightLabel = new JLabel("Weight (kg):");
         weightLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        weightLabel.setPreferredSize(new Dimension(100, 30));
-        bmiInputPanel.add(weightLabel);
+        bmiInputPanel.add(weightLabel, bmiGbc);
 
+        // Weight field - close to label
+        bmiGbc.gridx = 3;
+        bmiGbc.weightx = 0.3; // Allow stretching
+        bmiGbc.insets = new Insets(0, 5, 0, 0); // 5px from label
         weightField = new JTextField();
         weightField.setFont(new Font("Arial", Font.PLAIN, 16));
-        weightField.setMaximumSize(new Dimension(150, 40));
         weightField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
-        bmiInputPanel.add(weightField);
+        bmiInputPanel.add(weightField, bmiGbc);
 
-        profileContent.add(bmiInputPanel);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
+        profileContent.add(bmiInputPanel, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
 
         // Calculate BMI Button
         calculateBmiButton = createStyledButton("Calculate BMI", new Color(76, 175, 80));
-        calculateBmiButton.setMaximumSize(new Dimension(200, 40));
-        calculateBmiButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        calculateBmiButton.setPreferredSize(new Dimension(200, 40));
         calculateBmiButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 calculateBMI();
             }
         });
-        profileContent.add(calculateBmiButton);
-        profileContent.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // BMI Results Panel
+        JPanel buttonWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        buttonWrapper.setBackground(Color.WHITE);
+        buttonWrapper.add(calculateBmiButton);
+        profileContent.add(buttonWrapper, gbc);
+        gbc.gridy++;
+
+        profileContent.add(Box.createVerticalStrut(10), gbc);
+        gbc.gridy++;
+
+        // BMI Results Panel with fixed size
         JPanel bmiResultPanel = new JPanel();
         bmiResultPanel.setLayout(new BoxLayout(bmiResultPanel, BoxLayout.Y_AXIS));
         bmiResultPanel.setBackground(new Color(245, 250, 245));
@@ -225,8 +299,7 @@ public class EditableProfilePanel extends JPanel {
                 BorderFactory.createLineBorder(new Color(200, 220, 200), 2),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
-        bmiResultPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-        bmiResultPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bmiResultPanel.setPreferredSize(new Dimension(0, 120));
 
         bmiValueLabel = new JLabel("BMI: Not calculated");
         bmiValueLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -247,13 +320,15 @@ public class EditableProfilePanel extends JPanel {
         bmiStatusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         bmiResultPanel.add(bmiStatusLabel);
 
-        profileContent.add(bmiResultPanel);
+        profileContent.add(bmiResultPanel, gbc);
+        gbc.gridy++;
 
-        // Save/Cancel buttons (initially hidden)
-        profileContent.add(Box.createRigidArea(new Dimension(0, 20)));
+        // Save/Cancel buttons
+        profileContent.add(Box.createVerticalStrut(15), gbc);
+        gbc.gridy++;
+
         JPanel savePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         savePanel.setOpaque(false);
-        savePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 
         cancelButton = createStyledButton("Cancel", new Color(150, 150, 150));
         cancelButton.addActionListener(new ActionListener() {
@@ -273,9 +348,17 @@ public class EditableProfilePanel extends JPanel {
         saveButton.setVisible(false);
         savePanel.add(saveButton);
 
-        profileContent.add(savePanel);
+        profileContent.add(savePanel, gbc);
 
-        JScrollPane scrollPane = new JScrollPane(profileContent);
+        // Add vertical glue at the end
+        gbc.gridy++;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        profileContent.add(Box.createVerticalGlue(), gbc);
+
+        contentWrapper.add(profileContent, BorderLayout.CENTER);
+
+        JScrollPane scrollPane = new JScrollPane(contentWrapper);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         add(scrollPane, BorderLayout.CENTER);
@@ -285,7 +368,6 @@ public class EditableProfilePanel extends JPanel {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.BOLD, 14));
         label.setForeground(new Color(45, 60, 35));
-        label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
     }
 
@@ -352,63 +434,63 @@ public class EditableProfilePanel extends JPanel {
         if (gender.equalsIgnoreCase("Male")) {
             if (bmi < 18.5) {
                 category = "Underweight";
-                status = "Your BMI is below the healthy range for men. Consider consulting a nutritionist to gain weight healthily.";
+                status = "Your BMI is below the healthy range for men. Consider consulting a nutritionist.";
                 categoryColor = new Color(255, 152, 0);
             } else if (bmi >= 18.5 && bmi < 25) {
                 category = "Normal (Healthy)";
-                status = "Excellent! Your BMI is in the healthy range for men. Maintain your current lifestyle.";
+                status = "Excellent! Your BMI is in the healthy range for men.";
                 categoryColor = new Color(76, 175, 80);
             } else if (bmi >= 25 && bmi < 30) {
                 category = "Overweight";
-                status = "Your BMI is above the healthy range for men. Consider increasing physical activity and monitoring diet.";
+                status = "Your BMI is above the healthy range. Consider increasing physical activity.";
                 categoryColor = new Color(255, 193, 7);
             } else {
                 category = "Obese";
-                status = "Your BMI indicates obesity. It's recommended to consult a healthcare provider for a personalized plan.";
+                status = "Consider consulting a healthcare provider for a personalized plan.";
                 categoryColor = new Color(244, 67, 54);
             }
         } else if (gender.equalsIgnoreCase("Female")) {
             if (bmi < 18.5) {
                 category = "Underweight";
-                status = "Your BMI is below the healthy range for women. Consider consulting a nutritionist to gain weight healthily.";
+                status = "Your BMI is below the healthy range for women. Consider consulting a nutritionist.";
                 categoryColor = new Color(255, 152, 0);
             } else if (bmi >= 18.5 && bmi < 24) {
                 category = "Normal (Healthy)";
-                status = "Excellent! Your BMI is in the healthy range for women. Maintain your current lifestyle.";
+                status = "Excellent! Your BMI is in the healthy range for women.";
                 categoryColor = new Color(76, 175, 80);
             } else if (bmi >= 24 && bmi < 29) {
-                category = "Overweight";
-                status = "Your BMI is above the healthy range for women. Consider increasing physical activity and monitoring diet.";
-                categoryColor = new Color(255, 193, 7);
-            } else {
-                category = "Obese";
-                status = "Your BMI indicates obesity. It's recommended to consult a healthcare provider for a personalized plan.";
-                categoryColor = new Color(244, 67, 54);
-            }
-        } else {
-            // Default/Other gender - use standard BMI ranges
-            if (bmi < 18.5) {
-                category = "Underweight";
-                status = "Your BMI is below the healthy range. Consider consulting a healthcare provider.";
-                categoryColor = new Color(255, 152, 0);
-            } else if (bmi >= 18.5 && bmi < 25) {
-                category = "Normal (Healthy)";
-                status = "Your BMI is in the healthy range. Maintain your current lifestyle.";
-                categoryColor = new Color(76, 175, 80);
-            } else if (bmi >= 25 && bmi < 30) {
                 category = "Overweight";
                 status = "Your BMI is above the healthy range. Consider lifestyle modifications.";
                 categoryColor = new Color(255, 193, 7);
             } else {
                 category = "Obese";
-                status = "Your BMI indicates obesity. Consult a healthcare provider for guidance.";
+                status = "Consider consulting a healthcare provider for guidance.";
+                categoryColor = new Color(244, 67, 54);
+            }
+        } else {
+            // Default/Other gender
+            if (bmi < 18.5) {
+                category = "Underweight";
+                status = "Your BMI is below the healthy range.";
+                categoryColor = new Color(255, 152, 0);
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = "Normal (Healthy)";
+                status = "Your BMI is in the healthy range.";
+                categoryColor = new Color(76, 175, 80);
+            } else if (bmi >= 25 && bmi < 30) {
+                category = "Overweight";
+                status = "Your BMI is above the healthy range.";
+                categoryColor = new Color(255, 193, 7);
+            } else {
+                category = "Obese";
+                status = "Consider consulting a healthcare provider.";
                 categoryColor = new Color(244, 67, 54);
             }
         }
 
         bmiCategoryLabel.setText("Category: " + category);
         bmiCategoryLabel.setForeground(categoryColor);
-        bmiStatusLabel.setText("<html><body style='width: 450px'>" + status + "</body></html>");
+        bmiStatusLabel.setText("<html><body style='width: 100%'>" + status + "</body></html>");
     }
 
     private void toggleEditMode() {
@@ -425,10 +507,6 @@ public class EditableProfilePanel extends JPanel {
         saveButton.setVisible(editMode);
         cancelButton.setVisible(editMode);
         changePasswordButton.setVisible(!editMode);
-
-        if (editMode) {
-            editButton.setText("Cancel");
-        }
     }
 
     private void cancelEdit() {
