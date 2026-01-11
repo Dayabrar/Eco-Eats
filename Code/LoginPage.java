@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Login Page - User Authentication Interface
- * Version: 1.0
- * Features: Email/Password login, Forgot password, Registration link
+ * Login Page - User Authentication Interface with Admin Support
+ * Version: 2.0 - Added Admin Panel routing
+ * Features: Email/Password login, Forgot password, Registration link, Admin detection
  */
 public class LoginPage extends JFrame {
     private JTextField emailField;
@@ -90,7 +90,7 @@ public class LoginPage extends JFrame {
 
         // Testimonial
         JTextArea testimonialArea = new JTextArea(
-                "What I love most about Eco-Eats is that it doesn't just track calories — it also encourages sustainable eating choices. I'm hitting my nutrition targets and reducing my carbon footprint at the same time!"
+                "What I love most about Eco-Eats is that it doesn't just track calories – it also encourages sustainable eating choices. I'm hitting my nutrition targets and reducing my carbon footprint at the same time!"
         );
         testimonialArea.setBounds(80, 540, 300, 100);
         testimonialArea.setFont(new Font("Serif", Font.ITALIC, 13));
@@ -120,7 +120,7 @@ public class LoginPage extends JFrame {
         JLabel welcomeLabel = new JLabel("Welcome Back");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 48));
         welcomeLabel.setForeground(Color.BLACK);
-        welcomeLabel.setBounds(220, 125, 400, 60);
+        welcomeLabel.setBounds(240, 125, 400, 60);
         formPanel.add(welcomeLabel);
 
         // Email Address Label
@@ -135,6 +135,7 @@ public class LoginPage extends JFrame {
         emailField.setBounds(220, 260, 390, 45);
         emailField.setFont(new Font("Arial", Font.PLAIN, 15));
         emailField.setBackground(Color.WHITE);
+        //emailField.setForeground(Color.GREEN);
         emailField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
                 BorderFactory.createEmptyBorder(5, 15, 5, 15)
@@ -225,13 +226,13 @@ public class LoginPage extends JFrame {
         JLabel newUserLabel = new JLabel("New to Eco-Eats?");
         newUserLabel.setFont(new Font("Arial", Font.PLAIN, 15));
         newUserLabel.setForeground(Color.BLACK);
-        newUserLabel.setBounds(280, 555, 140, 20);
+        newUserLabel.setBounds(292, 540, 140, 20);
         formPanel.add(newUserLabel);
 
         createAccountLabel = new JLabel("<html><u>Create Account</u></html>");
         createAccountLabel.setFont(new Font("Arial", Font.BOLD, 15));
         createAccountLabel.setForeground(new Color(139, 69, 19));
-        createAccountLabel.setBounds(420, 555, 130, 20);
+        createAccountLabel.setBounds(432, 540, 130, 20);
         createAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         createAccountLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -282,7 +283,12 @@ public class LoginPage extends JFrame {
                     DatabaseHelper.UserData user = DatabaseHelper.getUserByEmail(email);
 
                     if (user != null) {
-                        new Dashboard(user);
+                        // Check user role and redirect accordingly
+                        if ("admin".equals(user.role)) {
+                            new AdminPanel(user);
+                        } else {
+                            new Dashboard(user);
+                        }
                         dispose();
                     }
                 } else {
