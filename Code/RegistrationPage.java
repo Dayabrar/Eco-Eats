@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Eco-Eats Registration Page
+ * Eco-Eats Registration Page with Role Selection
  * Complete implementation with email verification
- * Version: 1.0 - Full Code
+ * Version: 2.0 - Added Role System (User/Admin)
  */
 public class RegistrationPage extends JFrame {
     // Form fields
@@ -14,6 +14,7 @@ public class RegistrationPage extends JFrame {
     private JTextField ageField;
     private JComboBox<String> genderComboBox;
     private JComboBox<String> activityComboBox;
+    private JComboBox<String> roleComboBox;
     private JPasswordField passwordField;
     private JPasswordField confirmPasswordField;
 
@@ -54,7 +55,7 @@ public class RegistrationPage extends JFrame {
 
         // ECO-EATS Title
         JLabel ecoEatsTitle = new JLabel("ECO-EATS");
-        ecoEatsTitle.setFont(new Font("Arial", Font.BOLD, 31));
+        ecoEatsTitle.setFont(new Font("Serif", Font.BOLD, 62));
         ecoEatsTitle.setForeground(Color.WHITE);
         ecoEatsTitle.setBounds(37, 147, 350, 65);
         leftPanel.add(ecoEatsTitle);
@@ -132,25 +133,25 @@ public class RegistrationPage extends JFrame {
         JLabel createAccountTitle = new JLabel("Create Account");
         createAccountTitle.setFont(new Font("Arial", Font.BOLD, 32));
         createAccountTitle.setForeground(Color.BLACK);
-        createAccountTitle.setBounds(253, 68, 300, 40);
+        createAccountTitle.setBounds(253, 33, 300, 40);
         formPanel.add(createAccountTitle);
 
         // ==================== PERSONAL INFORMATION SECTION ====================
         JLabel personalInfoLabel = new JLabel("Personal Information");
         personalInfoLabel.setFont(new Font("Arial", Font.BOLD, 16));
         personalInfoLabel.setForeground(new Color(76, 175, 80));
-        personalInfoLabel.setBounds(253, 130, 200, 20);
+        personalInfoLabel.setBounds(253, 90, 200, 20);
         formPanel.add(personalInfoLabel);
 
         // Full Name
         JLabel fullNameLabel = new JLabel("Full Name");
         fullNameLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         fullNameLabel.setForeground(Color.BLACK);
-        fullNameLabel.setBounds(253, 160, 100, 20);
+        fullNameLabel.setBounds(253, 118, 100, 20);
         formPanel.add(fullNameLabel);
 
         fullNameField = new JTextField();
-        fullNameField.setBounds(253, 182, 342, 30);
+        fullNameField.setBounds(253, 140, 342, 30);
         fullNameField.setFont(new Font("Arial", Font.PLAIN, 13));
         fullNameField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         formPanel.add(fullNameField);
@@ -159,11 +160,11 @@ public class RegistrationPage extends JFrame {
         JLabel emailLabel = new JLabel("Email Address");
         emailLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         emailLabel.setForeground(Color.BLACK);
-        emailLabel.setBounds(253, 222, 100, 20);
+        emailLabel.setBounds(253, 178, 100, 20);
         formPanel.add(emailLabel);
 
         emailField = new JTextField();
-        emailField.setBounds(253, 244, 342, 30);
+        emailField.setBounds(253, 200, 342, 30);
         emailField.setFont(new Font("Arial", Font.PLAIN, 13));
         emailField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         formPanel.add(emailField);
@@ -172,11 +173,11 @@ public class RegistrationPage extends JFrame {
         JLabel ageLabel = new JLabel("Age");
         ageLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         ageLabel.setForeground(Color.BLACK);
-        ageLabel.setBounds(253, 284, 100, 20);
+        ageLabel.setBounds(253, 238, 100, 20);
         formPanel.add(ageLabel);
 
         ageField = new JTextField();
-        ageField.setBounds(253, 306, 342, 30);
+        ageField.setBounds(253, 260, 342, 30);
         ageField.setFont(new Font("Arial", Font.PLAIN, 13));
         ageField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
         formPanel.add(ageField);
@@ -185,19 +186,19 @@ public class RegistrationPage extends JFrame {
         JLabel profileDetailsLabel = new JLabel("Profile Details");
         profileDetailsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         profileDetailsLabel.setForeground(new Color(76, 175, 80));
-        profileDetailsLabel.setBounds(253, 348, 200, 20);
+        profileDetailsLabel.setBounds(253, 298, 200, 20);
         formPanel.add(profileDetailsLabel);
 
         // Gender
         JLabel genderLabel = new JLabel("Gender");
         genderLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         genderLabel.setForeground(Color.BLACK);
-        genderLabel.setBounds(253, 378, 100, 20);
+        genderLabel.setBounds(253, 326, 100, 20);
         formPanel.add(genderLabel);
 
         String[] genderOptions = {"Select Gender", "Male", "Female", "Other"};
         genderComboBox = new JComboBox<>(genderOptions);
-        genderComboBox.setBounds(253, 400, 342, 30);
+        genderComboBox.setBounds(253, 348, 342, 30);
         genderComboBox.setFont(new Font("Arial", Font.PLAIN, 13));
         genderComboBox.setBackground(Color.WHITE);
         formPanel.add(genderComboBox);
@@ -206,22 +207,36 @@ public class RegistrationPage extends JFrame {
         JLabel activityLabel = new JLabel("Activity level");
         activityLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         activityLabel.setForeground(Color.BLACK);
-        activityLabel.setBounds(253, 440, 100, 20);
+        activityLabel.setBounds(253, 386, 100, 20);
         formPanel.add(activityLabel);
 
         String[] activityOptions = {"Select Activity Level", "Sedentary", "Lightly Active",
                 "Moderately Active", "Very Active", "Extremely Active"};
         activityComboBox = new JComboBox<>(activityOptions);
-        activityComboBox.setBounds(253, 462, 342, 30);
+        activityComboBox.setBounds(253, 408, 342, 30);
         activityComboBox.setFont(new Font("Arial", Font.PLAIN, 13));
         activityComboBox.setBackground(Color.WHITE);
         formPanel.add(activityComboBox);
+
+        // Role Selection (NEW)
+        JLabel roleLabel = new JLabel("Account Type");
+        roleLabel.setFont(new Font("Arial", Font.PLAIN, 13));
+        roleLabel.setForeground(Color.BLACK);
+        roleLabel.setBounds(253, 446, 100, 20);
+        formPanel.add(roleLabel);
+
+        String[] roleOptions = {"User", "Admin"};
+        roleComboBox = new JComboBox<>(roleOptions);
+        roleComboBox.setBounds(253, 468, 342, 30);
+        roleComboBox.setFont(new Font("Arial", Font.PLAIN, 13));
+        roleComboBox.setBackground(Color.WHITE);
+        formPanel.add(roleComboBox);
 
         // ==================== SECURITY SECTION ====================
         JLabel securityLabel = new JLabel("Security");
         securityLabel.setFont(new Font("Arial", Font.BOLD, 16));
         securityLabel.setForeground(new Color(76, 175, 80));
-        securityLabel.setBounds(253, 504, 200, 20);
+        securityLabel.setBounds(253, 506, 200, 20);
         formPanel.add(securityLabel);
 
         // Password
@@ -277,7 +292,7 @@ public class RegistrationPage extends JFrame {
 
         // ==================== REGISTER BUTTON ====================
         registerButton = new JButton("Create Nutrition Profile");
-        registerButton.setBounds(295, 680, 260, 45);
+        registerButton.setBounds(295, 675, 260, 40);
         registerButton.setFont(new Font("Arial", Font.BOLD, 15));
         registerButton.setForeground(Color.WHITE);
         registerButton.setBackground(new Color(123, 141, 74));
@@ -302,13 +317,13 @@ public class RegistrationPage extends JFrame {
         JLabel alreadyAccountLabel = new JLabel("Already have an account?");
         alreadyAccountLabel.setFont(new Font("Arial", Font.PLAIN, 13));
         alreadyAccountLabel.setForeground(Color.BLACK);
-        alreadyAccountLabel.setBounds(320, 727, 165, 20);
+        alreadyAccountLabel.setBounds(320, 720, 165, 20);
         formPanel.add(alreadyAccountLabel);
 
         signInLabel = new JLabel("<html><u>Sign in</u></html>");
         signInLabel.setFont(new Font("Arial", Font.BOLD, 13));
         signInLabel.setForeground(new Color(100, 120, 60));
-        signInLabel.setBounds(475, 727, 60, 20);
+        signInLabel.setBounds(475, 720, 60, 20);
         signInLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         signInLabel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -336,6 +351,7 @@ public class RegistrationPage extends JFrame {
         String ageStr = ageField.getText().trim();
         String gender = (String) genderComboBox.getSelectedItem();
         String activity = (String) activityComboBox.getSelectedItem();
+        String role = ((String) roleComboBox.getSelectedItem()).toLowerCase();
         String password = new String(passwordField.getPassword());
         String confirmPassword = new String(confirmPasswordField.getPassword());
 
@@ -458,14 +474,18 @@ public class RegistrationPage extends JFrame {
                     dialog.setVisible(true);
 
                     if (dialog.isVerified()) {
-                        // Save to database
+                        // Save to database with role
                         boolean saved = DatabaseHelper.registerUser(
-                                fullName, email, finalAge, gender, activity, password
+                                fullName, email, finalAge, gender, activity, password, role
                         );
 
                         if (saved) {
+                            String successMessage = role.equals("admin") ?
+                                    "Admin account created successfully!\nYou can now login with admin privileges." :
+                                    "Registration Successful!\nYour account has been created. You can now login.";
+
                             JOptionPane.showMessageDialog(this,
-                                    "Registration Successful!\nYour account has been created. You can now login.",
+                                    successMessage,
                                     "Success",
                                     JOptionPane.INFORMATION_MESSAGE);
                             openLoginPage();
